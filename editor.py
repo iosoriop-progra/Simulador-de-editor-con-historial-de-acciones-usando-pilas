@@ -10,7 +10,7 @@ class TextEditor:
         self.action_history = []     # Lista de strings para el registro 
 
     def write(self, new_text):
-        """Agrega texto al contenido actual."""
+        "Agrega texto al contenido actual."
         if not new_text or new_text.strip() == "":
             return False, "Error: No se puede escribir texto vacío."
 
@@ -28,7 +28,7 @@ class TextEditor:
         return True, "Texto agregado correctamente."
 
     def delete(self, n):
-        """Elimina los últimos 'n' caracteres del contenido."""
+        "Elimina los últimos 'n' caracteres del contenido."
         if n <= 0:
             return False, "Error: La cantidad de caracteres a borrar debe ser mayor a 0."
 
@@ -53,7 +53,7 @@ class TextEditor:
         return True, f"Se borraron {chars_to_remove} caracteres."
 
     def undo(self):
-        """Revierte a la última versión del texto guardada en la pila."""
+        "Revierte a la última versión del texto guardada en la pila."
         if self.undo_stack.is_empty():
             return False, "No hay acciones para deshacer."
 
@@ -69,7 +69,7 @@ class TextEditor:
         return True, "Acción deshecha."
 
     def redo(self):
-        """Vuelve a aplicar una acción que fue deshecha."""
+        "Vuelve a aplicar una acción que fue deshecha."
         if self.redo_stack.is_empty():
             return False, "No hay acciones para rehacer."
 
@@ -83,11 +83,11 @@ class TextEditor:
         return True, "Acción rehecha."
 
     def show(self):
-        """Retorna el contenido actual del editor."""
+        "Retorna el contenido actual del editor."
         return self.content
 
     def get_history(self):
-        """Retorna la lista de acciones realizadas."""
+        "Retorna la lista de acciones realizadas."
         return self.action_history
 
 
