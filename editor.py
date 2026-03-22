@@ -1,27 +1,23 @@
-"""
-Módulo: editor.py
-Descripción: Lógica principal del Editor de Texto con sistema Undo/Redo.
-             Importa y utiliza la clase Stack de stack.py.
-"""
+"Módulo: editor.py"
 
 from stack import Stack
 
 class TextEditor:
     def __init__(self):
         self.content = ""            # El texto actual que se ve en pantalla
-        self.undo_stack = Stack()    # Pila para deshacer (guarda estados anteriores)
-        self.redo_stack = Stack()    # Pila para rehacer (guarda estados revertidos)
-        self.action_history = []     # Lista de strings para el registro de auditoría
+        self.undo_stack = Stack()    # Pila para guarda estados anteriores
+        self.redo_stack = Stack()    # Pila para guarda estados revertidos
+        self.action_history = []     # Lista de strings para el registro 
 
     def write(self, new_text):
         """Agrega texto al contenido actual."""
         if not new_text or new_text.strip() == "":
             return False, "Error: No se puede escribir texto vacío."
 
-        # 1. Antes de cambiar el contenido, guardamos el estado actual en Undo
+        # 1. Antes de cambiar el contenido,  se guarda la info actual
         self.undo_stack.push(self.content)
         
-        # 2. Al escribir algo nuevo, la pila de Redo debe limpiarse según la lógica estándar
+        # 2. Al escribir algo nuevo, la pila de Redo debe limpiarse 
         if not self.redo_stack.is_empty():
             self.redo_stack.clear()
 
@@ -39,11 +35,11 @@ class TextEditor:
         if len(self.content) == 0:
             return False, "Error: No hay texto para borrar."
 
-        # Guardamos estado antes del borrado
+        # Guardamos  antes del borrado (SIEMPRE
         self.undo_stack.push(self.content)
         self.redo_stack.clear()
 
-        # Validación de límite: Si piden borrar más de lo que hay, borramos todo
+        #  Si piden borrar más de lo que hay, borramos todo
         actual_length = len(self.content)
         chars_to_remove = min(n, actual_length)
         
@@ -61,9 +57,11 @@ class TextEditor:
         if self.undo_stack.is_empty():
             return False, "No hay acciones para deshacer."
 
-        # El estado actual se mueve a Redo antes de cambiarlo
-        self.redo_stack.push(self.content)
         
+        self.redo_stack.push(self.content) #ideal practicar mas esta funcion 
+        #(es interesante)
+
+
         # Recuperamos el tope de la pila Undo
         self.content = self.undo_stack.pop()
         
@@ -93,35 +91,35 @@ class TextEditor:
         return self.action_history
 
 
-# ==========================================
-# SECCIÓN DE PRUEBAS (UNIT TESTING CON ASSERT)
-# ==========================================
+
+
+#Seccion para realizar las pruebas solicitadas y demostrar funcionabilidad
 def run_editor_tests():
     print("Iniciando pruebas unitarias de TextEditor...")
     
     editor = TextEditor()
 
-    # Prueba 1: Escritura y validación de retorno
+    # Prueba 1: Consta de la Escritura y validación de retorno
     exito, msg = editor.write("Hola")
     assert exito == True
     assert editor.show() == "Hola"
     
-    # Prueba 2: Escritura vacía
+    # Prueba 2: Valida cuando el usuario ingrese una Escritura vacía
     exito, msg = editor.write("")
     assert exito == False
     assert "vacío" in msg
 
-    # Prueba 3: Undo funcional
+    # Prueba 3: Probamos la funcion Undo de manera funcional
     editor.write(" Mundo")
     editor.undo()
     assert editor.show() == "Hola", "Error en Undo: El texto debería ser 'Hola'"
 
-    # Prueba 4: Redo funcional
+    # Prueba 4: Se verifica que tambien el Redo funcione con normalidad
     editor.redo()
     assert editor.show() == "Hola Mundo", "Error en Redo: Debería ser 'Hola Mundo'"
 
-    # Prueba 5: Borrado con validación de límite
-    # Intentamos borrar 50 caracteres de una cadena de 10
+    # Prueba 5: se hace la funcion borra pero se delimita los caracteres
+    # Cuando intan borrar más de los que existen, por ejemplo 50 pero solo habían 10
     exito, msg = editor.delete(50)
     assert editor.show() == ""
     assert "Aviso" in msg
