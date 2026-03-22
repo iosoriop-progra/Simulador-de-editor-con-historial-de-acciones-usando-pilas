@@ -1,4 +1,5 @@
 "Achivo: main.py"
+#Parte visual del proyecto, su interfaz Gráfica
 
 import tkinter as tk
 from tkinter import ttk, messagebox
@@ -14,7 +15,7 @@ class EditorGrafico:
         # Instancia de la lógica (Paso B)
         self.editor_logica = TextEditor()
         
-        # --- Configuración Estética ---
+        # El estilo de la pantalla
         self.fuente_principal = ("Century Gothic", 11)
         self.fuente_titulo = ("Century Gothic", 16, "bold")
         self.fuente_mono = ("Consolas", 12) # Para el área de texto
@@ -29,22 +30,21 @@ class EditorGrafico:
         # 1. Construir la estructura visual
         self._crear_interfaz()
         
-        # 2. CORRECCIÓN: Inicializar la pantalla al arrancar
-        # Esto asegura que el estado inicial (vacío) sea consistente visualmente
+        #  Inicializar la pantalla al arrancar
         self.actualizar_pantalla()
 
     def _crear_interfaz(self):
         """Define la disposición de los elementos en la ventana."""
-        # Contenedor con margen tipo 'Card'
+        
         main_frame = tk.Frame(self.root, bg="#F0F4F8", padx=25, pady=20)
         main_frame.pack(expand=True, fill="both")
 
-        # --- ENCABEZADO ---
+        # ENCABEZADO
         header = tk.Label(main_frame, text="EDITOR DE TEXTO (Isabel Osorio 2890-23-12261)", 
                           font=self.fuente_titulo, bg="#F0F4F8", fg=self.GRIS_OSCURO)
         header.pack(pady=(0, 20))
 
-        # --- ENTRADA DE TEXTO ---
+        # Aqui se va a ingresar el texto
         tk.Label(main_frame, text="Escribe aquí:", font=self.fuente_principal, 
                  bg="#F0F4F8", fg=self.GRIS_OSCURO).pack(anchor="w")
         
@@ -54,11 +54,11 @@ class EditorGrafico:
         self.input_text.pack(fill="x", ipady=10, pady=(5, 15))
         self.input_text.bind("<Return>", lambda e: self.ejecutar_escritura())
 
-        # --- PANEL DE CONTROL (BOTONES) ---
+        #Los botones estan aquí
         btn_frame = tk.Frame(main_frame, bg="#F0F4F8")
         btn_frame.pack(fill="x", pady=5)
 
-        # Configuración común para botones
+        #Darle confiduracion pa que funcionen
         btn_config = {"relief": "flat", "font": self.fuente_principal, "cursor": "hand2", "padx": 10}
 
         self.btn_write = tk.Button(btn_frame, text="Agregar Texto", bg=self.VERDE_LIMON_PASTEL,
@@ -82,7 +82,7 @@ class EditorGrafico:
                                    command=self.ejecutar_borrado, **btn_config)
         self.btn_delete.pack(side="left", padx=5)
 
-        # --- ÁREA DE VISUALIZACIÓN ---
+        # esta es el area de visualizacion
         tk.Label(main_frame, text="\nContenido en Memoria:", font=self.fuente_principal, 
                  bg="#F0F4F8", fg=self.GRIS_OSCURO).pack(anchor="w")
         
@@ -92,7 +92,7 @@ class EditorGrafico:
         self.display_area.pack(fill="both", pady=10)
         self.display_area.config(state="disabled") # Bloqueado para edición directa
 
-        # --- REGISTRO DE HISTORIAL ---
+        # el registro del historial 
         tk.Label(main_frame, text="Historial de Acciones:", font=self.fuente_principal, 
                  bg="#F0F4F8", fg=self.GRIS_OSCURO).pack(anchor="w")
         
@@ -100,7 +100,7 @@ class EditorGrafico:
                                        bg="#FDFEFE", relief="flat", borderwidth=0)
         self.history_list.pack(fill="both", expand=True, pady=(5, 0))
 
-    # --- LÓGICA DE INTERFACCIÓN ---
+    
 
     def actualizar_pantalla(self):
         """Mantiene la UI sincronizada con la instancia de TextEditor."""
@@ -110,7 +110,7 @@ class EditorGrafico:
         self.display_area.insert(tk.END, self.editor_logica.show())
         self.display_area.config(state="disabled")
 
-        # 2. Actualizar la lista del historial (LIFO visual)
+        # 2. Actualizar la lista del historial 
         self.history_list.delete(0, tk.END)
         for accion in reversed(self.editor_logica.get_history()):
             self.history_list.insert(tk.END, f" • {accion}")
@@ -156,7 +156,8 @@ class EditorGrafico:
 # Punto de entrada de la aplicación
 if __name__ == "__main__":
     root = tk.Tk()
-    # Centrar la ventana (opcional pero profesional)
+    #Le agregue esto para que estuviera centrada la pantalla 
+    # y se viera profesional y bonito
     root.eval('tk::PlaceWindow . center')
     app = EditorGrafico(root)
     root.mainloop()
